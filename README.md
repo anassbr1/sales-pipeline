@@ -2,11 +2,13 @@
 
 Pipeline ETL automatisé pour l'analyse des ventes, la prévision ML et la visualisation via Power BI — entièrement conteneurisé avec Docker.
 
-[https://img.shields.io/badge/Python-3.11-blue]
-[https://img.shields.io/badge/PostgreSQL-16-blue]
-[https://img.shields.io/badge/Docker-Compose-blue]
-[https://img.shields.io/badge/PowerBI-Desktop-yellow]
-[https://img.shields.io/badge/Scikit--Learn-ML-orange]
+<p align="left">
+  <img src="https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white" alt="Python" />
+  <img src="https://img.shields.io/badge/PostgreSQL-16-4169E1?style=for-the-badge&logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/Docker-Compose-2496ED?style=for-the-badge&logo=docker&logoColor=white" alt="Docker" />
+  <img src="https://img.shields.io/badge/Power_BI-Desktop-F2C811?style=for-the-badge&logo=powerbi&logoColor=black" alt="Power BI" />
+  <img src="https://img.shields.io/badge/Scikit_Learn-ML-F7931E?style=for-the-badge&logo=scikit-learn&logoColor=white" alt="Scikit-Learn" />
+</p>
 
 ---
 
