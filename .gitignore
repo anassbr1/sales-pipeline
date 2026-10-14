@@ -1,0 +1,29 @@
+# Environnement Python
+sales/
+venv/
+__pycache__/
+*.pyc
+*.pyo
+
+# Secrets
+.env
+
+# Données volumineuses
+data/*.csv
+data/*.xlsx
+!data/.gitkeep
+
+# Notebooks
+notebooks/.ipynb_checkpoints/
+
+# Power BI
+dashboard/*.pbix
+
+# Docker
+docker/pgdata/
+
+# Logs
+*.log
+
+# VS Code
+.vscode/

@@ -1,0 +1,84 @@
+version: '3.9'
+
+services:
+
+  postgres:
+    image: postgres:16
+    container_name: sales_postgres
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: sales_db
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ../sql:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  etl:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: sales_etl
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: sales_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    volumes:
+      - ../data:/app/data
+      - ../scripts:/app/scripts
+      - ../sql:/app/sql
+    command: python scripts/etl.py
+
+  ml:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: sales_ml
+    depends_on:
+      etl:
+        condition: service_completed_successfully
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: sales_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    volumes:
+      - ../data:/app/data
+      - ../scripts:/app/scripts
+    command: python scripts/ml_forecast.py
+
+  scheduler:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    container_name: sales_scheduler
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_NAME: sales_db
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+    volumes:
+      - ../scripts:/app/scripts
+      - ../sql:/app/sql
+      - ../data:/app/data
+      - ./crontab:/etc/cron.d/pipeline
+    command: bash -c "crontab /etc/cron.d/pipeline && cron -f"
+
+volumes:
+  pgdata:
